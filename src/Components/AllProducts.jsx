@@ -47,6 +47,7 @@ background-color: #dc3545;
 border: none;
 color: white;
 cursor: pointer;
+margin-right:50px;
 `;
 const H1=styled.h1 `
 margin: 20px;
@@ -166,6 +167,38 @@ function showProducts(id){
 }
 
 
+const handleplus = (id) => {
+  let updatedProduct = [...showProduct];
+  updatedProduct[id].quantity = ((updatedProduct[id].quantity || 0) + 1);
+  SetProduct(updatedProduct);
+
+  // const productToAdd = { ...showProduct[id] };
+  // setCart([...cart.filter(item => item._id !== productToAdd._id), productToAdd]);
+  // calculateTotalPrice();
+};
+
+const handleminus = (id) => {
+  let updatedProduct = [...showProduct];
+  updatedProduct[id].quantity = Math.max(((updatedProduct[id].quantity || 0) - 1), 0);
+  SetProduct(updatedProduct);
+
+  // const productToRemove = { ...showProduct[id] };
+  // setCart(cart.filter(item => item._id !== productToRemove._id));
+  // calculateTotalPrice();
+};
+
+
+const addProductToCart = (id) => {
+  let updatedProduct = [...showProduct];
+  updatedProduct[id].quantity = ((updatedProduct[id].quantity || 0) + 1);;
+  SetProduct(updatedProduct);
+
+  // const productToAdd = { ...showProduct[id]};
+  // setCart([...cart, productToAdd]);
+  // calculateTotalPrice();
+
+};
+
 
   return (<>
    <Navbar/>
@@ -175,19 +208,30 @@ function showProducts(id){
     
 
 <Button onClick={()=>showProducts(restro._id)}>Add Product</Button>
+<Button >View Cart</Button>
 <H1>Restaurant :{restro.name}</H1>
 <Img src={restro.image} alt="" />
 
 
 <Box>
 
-{showProduct.map((res)=>{
+{showProduct.map((res,id)=>{
  
  return(<> 
   <Card   >
 <Img2 src={res.image} alt="" />
 <H3>{ res.name}</H3>
 <Description>{res.descriptions}</Description>
+<div id="quantity">Quantity:{res.quantity||0}
+{/* <p>data.quantity || 0</p> */}
+{!res.quantity?(
+  <><button onClick={() => addProductToCart(id)}>add</button></>
+):(
+  <><button onClick={() => handleminus(id)} > - </button>
+  <button onClick={() => handleplus(id)} > + </button>
+  </>
+)}
+ </div>
 
 <Price>${res.price}</Price>
 </Card>
