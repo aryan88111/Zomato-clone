@@ -121,7 +121,7 @@ li:nth-child(1) {
     min-height: 100vh;
     width: 100%;
     background-color: #fd7f00;
-    display: flex;
+    display: inline-block;
     justify-content: center;
     /* align-items: center; */
     margin-top: 5px;
@@ -131,9 +131,10 @@ li:nth-child(1) {
     min-height: 300px;
     width: 75%;
     background-color: wheat;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    /* display: grid; */
+    /* grid-template-columns: repeat(3, 1fr);
     gap: 1px;
-    grid-auto-rows: minmax(50px, 100%);
+    grid-auto-rows: minmax(50px, 100%); */
     padding: 20px;
 }

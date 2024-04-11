@@ -9,6 +9,7 @@ import {  Routes ,Route} from 'react-router-dom';
 import RHome from './RHome'
 import AllProducts from './Components/AllProducts'
 import AddProduct from './Components/AddProduct'
+import ViewCart from './Components/ViewCart'
 
 
 const App = () => {
@@ -24,6 +25,7 @@ const App = () => {
   <Route path='/seerestaurant/:restroId/product' element={<AllProducts/>}></Route>
   <Route path='/seerestaurant/:restroId/addproduct' element={<AddProduct/>}></Route>
   <Route path='/findrestro' element={<RHome/>}></Route>
+  <Route  path='/ViewCart/:restroId'   element={<ViewCart/>}/>
   
 </Routes>
 

@@ -28,7 +28,15 @@ const Item=style.div`
    height: 80px;
 width: 80px;
 background-color: aliceblue;
-border-radius: 50%;`;
+border-radius: 50%;
+@media (max-width: 800px) {
+
+  width:40px;
+  height: 40px;
+  // margin-left:-150px;
+  }
+
+`;
 
 const Card=style.div`
 height: 20vh;
@@ -45,6 +53,13 @@ height: 8vh;
 width: 8wv;
 margin-left: 10px;
 margin-top: 10px;
+@media (max-width: 800px) {
+  display: list-item;
+  // margin-top:20px;
+  width:30px;
+  height: 30px;
+  // margin-left:-150px;
+  }
 `;
 const H3=style.h3`
 margin-bottom: 30px;
@@ -52,11 +67,21 @@ margin-left: 10px;
 font-size: 3vh;
 color: #E03546;
 font-weight: normal;
+@media (max-width: 800px) {
+  font-size: 1vh;
+  margin-top:50px;
+ 
+  }
 `;
 const Line=style.div`
 height: 2px;
 width: 100%;
 background-color: #E03546;
+@media (max-width: 800px) {
+  height:1px;
+ 
+  }
+
 
 `;
 

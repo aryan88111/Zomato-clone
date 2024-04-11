@@ -42,7 +42,16 @@ margin-left:-70px;
 align-items: center;
 background-color: #fff;
 border-radius: 8px;
-padding:4px;`;
+padding:4px;
+@media (max-width: 800px) {
+  display: list-item;
+  margin-top:140px;
+  width:300px;
+  height: 80px;
+  margin-left:-150px;
+  }
+  `
+;
 
 
 const Input=style.input`
@@ -69,10 +78,16 @@ width: 200px;
 display: flex;
 justify-content: space-around;
 
+
 `;
 const Span=style.span`
 color:rgb(111, 109, 109);
 font-size: 2.5vh;
+margin:10px;
+@media (max-width: 1000px) {
+  display: none;
+  
+  }
 
 `;
 

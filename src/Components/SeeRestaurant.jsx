@@ -14,6 +14,12 @@ display: flex;
 justify-content: center;
 /* align-items: center; */
 margin-top: 50px;
+@media (max-width: 800px) {
+  
+  margin-top:110vh;
+  margin-bottom:-100vh;
+ 
+  }
 
 
 `;
@@ -27,6 +33,11 @@ grid-template-columns: repeat(3, 1fr);
 gap: 1px;
 grid-auto-rows: minmax(100px, 100%);
 padding: 20px;
+@media (max-width: 800px) {
+  grid-template-columns: repeat(1, 1fr);
+ 
+  }
+  
 `;
 
 const Card=styled.div`
@@ -120,50 +131,52 @@ function showFood(id){
 }
 
   return (
-   <Container>
+     <>
+    <Container>
+  
     
-    
-    <Main>
+     <H3>Restaurant</H3>
+   <Main>
 
 
 
 {
-  search.map((res)=> {
-    console.log(res.image);
-    return(<> 
-      <Card   onClick={ ()=>showFood(res._id)}>
-  <Img src={res.image} alt="" />
+ search.map((res)=> {
+   console.log(res.image);
+   return(<> 
+     <Card   onClick={ ()=>showFood(res._id)}>
+ <Img src={res.image} alt="" />
 <H3>{ res.name}</H3>
 <Description>{res.descriptions}</Description>
 
 <Address>{res.address}</Address>
-  </Card>
-     </>)
+ </Card>
+    </>)
 }
 )
 }
 
 
 
-  {/* <Card>
-  <Img src={} alt="" />
+ {/* <Card>
+ <Img src={} alt="" />
 <H3></H3>
 <Description></Description>
 
 <Address></Address>
-  </Card> */}
+ </Card> */}
 
 
 
 
-    </Main>
-    
-    
-    
-    
-    
-    
-    </Container>
+   </Main>
+   
+   
+   
+   
+   
+   
+   </Container></>
       
 
 

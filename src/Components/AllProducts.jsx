@@ -5,6 +5,7 @@ import axios from 'axios';
 import "../Collection.css" 
 import styled from 'styled-components';
 import Navbar from  "../Components2/Navbar"
+import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 
 import  {useNavigate} from "react-router-dom"
 
@@ -33,7 +34,7 @@ align-items: center;
 
 const Img=styled.img `
 width: 75vw;
-    height: 400px;
+    height: 300px;
     border-radius: 12px;
      object-fit:cover;
 `;
@@ -49,6 +50,7 @@ color: white;
 cursor: pointer;
 margin-right:50px;
 `;
+
 const H1=styled.h1 `
 margin: 20px;
     font-weight: 600;
@@ -63,10 +65,14 @@ grid-template-columns: repeat(3, 1fr);
 gap: 1px;
 grid-auto-rows: minmax(50px, 100%);
 padding: 20px;
+@media (max-width: 800px) {
+  grid-template-columns: repeat(1, 1fr);
+ 
+  }
 `;
 
 const Card=styled.div`
-height: 300px;
+height: 370px;
 width: 285px;
 background-color: #F8F9FC;
 // border:1px solid lightgray;
@@ -103,11 +109,44 @@ color: gray;
 
 `;
 const Price=styled.div`
-height: 5vh;
+height: 3vh;
 width: 250px;
 margin-left: 10px;
-color: gray;
+color: black;
 margin-top: 5px;
+display: flex;
+align-items: center;
+
+`;
+const Quantity=styled.div`
+height: 3vh;
+width: 250px;
+margin-left: 10px;
+color: black;
+margin-top: 5px;
+display: flex;
+// align-items: center;
+justify-content: space-between;
+`;
+
+const Btn2=styled(Button)`
+background-color:green;
+height: 3vh;
+font-size:2vh;
+width:min-content;
+padding:3px;
+border: none;
+border-radius: 4px;
+
+`;
+const Btn3=styled(Button)`
+background-color:#fd7f00;
+height: 25px;
+font-size:2vh;
+width:25px;
+padding:3px;
+border: none;
+border-radius: 50%;
 
 `;
 
@@ -123,6 +162,8 @@ const AllProducts = () => {
    
     const [showProduct, SetProduct] = useState([]);
     const [restro,SetRestro] = useState({});//restaurant
+    const [totalPrice, SetTotalPrice] = useState(0);
+    const [cart, setCart] = useState([]);
 
 ///restaurant
     useEffect(() => {
@@ -172,9 +213,9 @@ const handleplus = (id) => {
   updatedProduct[id].quantity = ((updatedProduct[id].quantity || 0) + 1);
   SetProduct(updatedProduct);
 
-  // const productToAdd = { ...showProduct[id] };
-  // setCart([...cart.filter(item => item._id !== productToAdd._id), productToAdd]);
-  // calculateTotalPrice();
+  const productToAdd = { ...showProduct[id] };
+  setCart([...cart.filter(item => item._id !== productToAdd._id), productToAdd]);
+  calculateTotalPrice();
 };
 
 const handleminus = (id) => {
@@ -182,9 +223,9 @@ const handleminus = (id) => {
   updatedProduct[id].quantity = Math.max(((updatedProduct[id].quantity || 0) - 1), 0);
   SetProduct(updatedProduct);
 
-  // const productToRemove = { ...showProduct[id] };
-  // setCart(cart.filter(item => item._id !== productToRemove._id));
-  // calculateTotalPrice();
+  const productToRemove = { ...showProduct[id] };
+  setCart(cart.filter(item => item._id !== productToRemove._id));
+  calculateTotalPrice();
 };
 
 
@@ -193,12 +234,23 @@ const addProductToCart = (id) => {
   updatedProduct[id].quantity = ((updatedProduct[id].quantity || 0) + 1);;
   SetProduct(updatedProduct);
 
-  // const productToAdd = { ...showProduct[id]};
-  // setCart([...cart, productToAdd]);
-  // calculateTotalPrice();
+  const productToAdd = { ...showProduct[id]};
+  setCart([...cart, productToAdd]);
+  calculateTotalPrice();
 
 };
 
+
+function calculateTotalPrice(price){
+  const totalPrice = showProduct.reduce((acc, curr) => {
+    return acc + (curr.price || 0) * (curr.quantity || 0);
+  }, 0);
+  SetTotalPrice(totalPrice);
+}
+
+const viewCart = () => {
+  navigate(`/viewCart/${restroId}`, { state: { cart, totalPrice, restro } });
+};
 
   return (<>
    <Navbar/>
@@ -208,7 +260,7 @@ const addProductToCart = (id) => {
     
 
 <Button onClick={()=>showProducts(restro._id)}>Add Product</Button>
-<Button >View Cart</Button>
+<Button onClick={()=>viewCart()}>View Cart ({cart.length})</Button>
 <H1>Restaurant :{restro.name}</H1>
 <Img src={restro.image} alt="" />
 
@@ -222,18 +274,17 @@ const addProductToCart = (id) => {
 <Img2 src={res.image} alt="" />
 <H3>{ res.name}</H3>
 <Description>{res.descriptions}</Description>
-<div id="quantity">Quantity:{res.quantity||0}
+<Quantity> Quantity:{res.quantity||0}
 {/* <p>data.quantity || 0</p> */}
 {!res.quantity?(
-  <><button onClick={() => addProductToCart(id)}>add</button></>
+  <><Btn2 onClick={() => addProductToCart(id)}>Add</Btn2></>
 ):(
-  <><button onClick={() => handleminus(id)} > - </button>
-  <button onClick={() => handleplus(id)} > + </button>
+  <><Btn3 onClick={() => handleminus(id)} > - </Btn3>
+  <Btn3 onClick={() => handleplus(id)} > + </Btn3>
   </>
-)}
- </div>
-
-<Price>${res.price}</Price>
+)}</Quantity>
+<Price>Price:   <CurrencyRupeeIcon  fontSize="x-small" />{res.price}</Price>
+<Price>TotalPrice:   <CurrencyRupeeIcon  fontSize="x-small" />{res.price*(res.quantity||0)}</Price>
 </Card>
  </>)
 
@@ -241,6 +292,7 @@ const addProductToCart = (id) => {
 }
 
 </Box>
+
 
 
 
