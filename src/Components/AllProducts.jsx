@@ -249,6 +249,7 @@ function calculateTotalPrice(price){
 }
 
 const viewCart = () => {
+  console.log(cart,"cartt aagayi");
   navigate(`/viewCart/${restroId}`, { state: { cart, totalPrice, restro } });
 };
 
@@ -309,3 +310,15 @@ const viewCart = () => {
 }
 
 export default AllProducts
+
+
+
+
+
+
+
+//pk_test_51P4JcdSJeGYHz3q7z6UJjoOSgvTRc8BtIgf9IA9iScPSUdjYEJfW7bHin4TMCEzlcNGLgXSxOOMAbsopRK4EqGtA00sm15nMJq
+
+
+
+//sk_test_51P4JcdSJeGYHz3q7TolsZEUSbMXVi71YuXlZ8s3mEEwmlkRi6n9QzQMgL0e36TVlAF9B4RjHxp6MvOQgA7zXP4sf00iN4lVMJZ

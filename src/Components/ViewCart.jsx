@@ -4,6 +4,7 @@ import "../Collection.css"
 import Navbar from  "../Components2/Navbar"
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
 import styled from 'styled-components';
+import {loadStripe} from '@stripe/stripe-js';
 
 
 
@@ -15,6 +16,9 @@ display: flex;
 justify-content: center;
 align-items: center; 
 // margin-top: 5px;
+@media (max-width: 1000px) {
+display: block;
+  }
 
 `;
 
@@ -135,6 +139,28 @@ height:30px;
     border: none;
     color:#fff;
 `;
+const Button3=styled.button`
+margin-top: 45px;
+margin-left: 15px;
+height:40px;
+
+    width: 90%;
+    background-color: #E03546;
+    border: none;
+    color:#fff;
+    border-radius:4px;
+    cursor:pointer;
+    &:hover{
+      box-shadow: 1px 1px 3px rgb(108, 102, 102);
+    }
+`;
+const FlexBox=styled.div`
+display:flex;
+justify-content: space-between;
+
+`;
+
+const Fbox=styled.div``;
 
 
 
@@ -154,12 +180,47 @@ const BillDetailsCard = ({ totalPrice, discount, gstRate, platformChargeRate }) 
       
   return (
     <div className='bill-details-card'>
-      <h3>Bill Details</h3>
-      <p>Total Price: {totalPrice}</p>
-      <p>Discount: {discount}%</p>
-      <p>GST ({gstRate}%): {gstAmount}</p>
-      <p>Platform Charge ({platformChargeRate}%): {platformCharge}</p>
-      <p>Total Amount: {totalAmount}</p>
+      <H2>Bill Details</H2>
+      <P><FlexBox>
+        <Fbox> Total Price: </Fbox>
+        <Fbox>{totalPrice}</Fbox>
+       
+        
+        </FlexBox></P>
+      <P>
+      <FlexBox>
+        <Fbox>  Discount: </Fbox>
+        <Fbox>{discount}%</Fbox>
+       
+        
+        </FlexBox>
+       </P>
+      <P>
+      <FlexBox>
+        <Fbox>  GST: </Fbox>
+        <Fbox>({gstRate}%): {gstAmount}</Fbox>
+       
+        
+        </FlexBox>
+        
+         </P>
+      <P>
+      <FlexBox>
+        <Fbox> Platform Charge : </Fbox>
+        <Fbox>({platformChargeRate}%): {platformCharge}</Fbox>
+       
+        
+        </FlexBox>
+      
+      </P>
+      <P>
+      <FlexBox>
+        <Fbox> Total Amount:</Fbox>
+        <Fbox>{totalAmount}</Fbox>
+       
+        
+        </FlexBox>
+        </P>
     </div>
   );
 };
@@ -172,7 +233,7 @@ const ViewCart = () => {
     const location=useLocation();
     const {restroId}=useParams();
 
-    const { cart, totalPrice: initialTotalPrice ,restaurant:restro} = location.state;
+    const { cart, totalPrice: initialTotalPrice , restro } = location.state;
     console.log(restro,"qwetyui");
 
     const [coupon, setCoupon] = useState('');
@@ -233,6 +294,36 @@ const ViewCart = () => {
         setCoupon(e.target.value);
       };
 
+
+
+      const handlePayment = async()=>{
+        const stripe = await loadStripe("pk_test_51P4JcdSJeGYHz3q7z6UJjoOSgvTRc8BtIgf9IA9iScPSUdjYEJfW7bHin4TMCEzlcNGLgXSxOOMAbsopRK4EqGtA00sm15nMJq");
+    
+        const body = {
+            products:cartItems,
+            restroId:restroId,
+            restro:restro
+        }
+        const headers = {
+            "Content-Type":"application/json"
+        }
+        const response = await fetch("http://localhost:7000/api/payment",{
+            method:"POST",
+            headers:headers,
+            body:JSON.stringify(body)
+        });
+    console.log(`response`, response);
+        const session = await response.json();
+    
+        const result = stripe.redirectToCheckout({
+            sessionId:session.id
+        });
+        
+        if(result.error){
+            console.log(result.error, 'errrrr aayatdgsgef');
+        }
+    }
+
   return (
     <>
     <Navbar/>
@@ -268,15 +359,45 @@ const ViewCart = () => {
         </Ul></Main>   </>)
 }
 
-
+{/* http://localhost:3000/viewCart/660c0f0416daf0c8fa781d17 */}
 
 <Main2>
   <Box>
   <H2>Your Total Bill</H2>
-  <P>Total Price:<CurrencyRupeeIcon  fontSize="x-small" /> {totalPrice}</P>
-          {discount > 0 && <P>Discount:<CurrencyRupeeIcon  fontSize="x-small" /> {discount}%</P>}
-          {savedAmount > 0 && <P>You saved: <CurrencyRupeeIcon  fontSize="x-small" />{savedAmount}</P>}
-          <P>Total Price after Discount: <CurrencyRupeeIcon  fontSize="x-small" />{totalPrice - (totalPrice * discount) / 100}</P>
+  <P>
+    
+  <FlexBox>
+        <Fbox> Total Price:</Fbox>
+        <Fbox><CurrencyRupeeIcon  fontSize="x-small" /> {totalPrice}</Fbox>
+       
+        
+        </FlexBox>
+    </P>
+          {discount > 0 && <P>
+            <FlexBox>
+        <Fbox>  Discount:</Fbox>
+        <Fbox><CurrencyRupeeIcon  fontSize="x-small" /> {discount}%</Fbox>
+       
+        
+        </FlexBox>
+          </P>}
+          {savedAmount > 0 && <P>
+            <FlexBox>
+        <Fbox>  You saved:</Fbox>
+        <Fbox><CurrencyRupeeIcon  fontSize="x-small" />{savedAmount}</Fbox>
+       
+        
+        </FlexBox>
+            </P>}
+          <P>
+          <FlexBox>
+        <Fbox>  Total Price after Discount:</Fbox>
+        <Fbox><CurrencyRupeeIcon  fontSize="x-small" />{totalPrice - (totalPrice * discount) / 100}</Fbox>
+       
+        
+        </FlexBox>
+            
+            </P>
          
             <Select value={coupon} onChange={handleCouponChange}>
               <Option value="">Select Coupon</Option>
@@ -293,7 +414,7 @@ const ViewCart = () => {
             gstRate={12}
             platformChargeRate={1}
           />
-            <Button2 onClick={handleApplyCoupon}>Pay Now</Button2>
+            <Button3 onClick={handlePayment}>PAY NOW</Button3>
           
   </Box>
 

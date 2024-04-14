@@ -137,4 +137,5 @@ li:nth-child(1) {
     gap: 1px;
     grid-auto-rows: minmax(50px, 100%); */
     padding: 20px;
+    justify-content: space-between;
 }
